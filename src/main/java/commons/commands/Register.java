@@ -12,9 +12,13 @@ public class Register extends Command {
         argumentAmount = 2;
     }
 
-    public void execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
-        if (success)
+    public boolean execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
+        if (success) {
             ui.messageToClient("Регистрация успешна!", clientAddress, clientPort);
-        else ui.messageToClient("Регистрация не удалась.", clientAddress, clientPort);
+            return true;
+        } else {
+            ui.messageToClient("Регистрация не удалась.", clientAddress, clientPort);
+            return false;
+        }
     }
 }

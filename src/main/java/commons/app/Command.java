@@ -27,32 +27,32 @@ public abstract class Command implements Serializable {
     protected Worker object;
     protected boolean editsCollection;
 
-    public void execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, User user) {
-
+    public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, User user) {
+        return false;
     }
 
-    public void execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
-
+    public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
+        return false;
     }
 
-    public void execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
-
+    public boolean execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
+        return false;
     }
 
-    public void execute(UserInterface ui, InteractionInterface interactiveStorage, Worker worker, InetAddress address, int port, DataBaseCenter dbc, User user) {
-
+    public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, Worker worker, InetAddress address, int port, DataBaseCenter dbc, User user) {
+        return false;
     }
 
-    public void execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, Worker worker, InetAddress address, int port, DataBaseCenter dbc, User user) {
-
+    public boolean execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, Worker worker, InetAddress address, int port, DataBaseCenter dbc, User user) {
+        return false;
     }
 
-    public void execute(InteractionInterface interactionInterface) {
-
+    public boolean execute(InteractionInterface interactionInterface) {
+        return false;
     }
 
-    public void execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
-
+    public boolean execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
+        return false;
     }
 
     /**

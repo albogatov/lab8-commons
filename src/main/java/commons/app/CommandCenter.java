@@ -106,75 +106,81 @@ public class CommandCenter {
      * @param ui                 объект, через который ведется взаимодействие с пользователем.
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
-    public void executeCommand(UserInterface ui, Command cmd, InteractionInterface interactiveStorage) {
+    public boolean executeCommand(UserInterface ui, Command cmd, InteractionInterface interactiveStorage) {
         logger.log(Level.INFO, "Executing server command initiated by user's actions");
-        cmd.execute(ui, interactiveStorage, clientAddress, clientPort, cmd.getUser());
+        return cmd.execute(ui, interactiveStorage, clientAddress, clientPort, cmd.getUser());
     }
 
-    public void executeCommand(UserInterface ui, Command cmd, InteractionInterface interactiveStorage, DataBaseCenter dataBaseCenter) {
+    public boolean executeCommand(UserInterface ui, Command cmd, InteractionInterface interactiveStorage, DataBaseCenter dataBaseCenter) {
         if (!cmd.isEditsCollection()) {
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with no arguments");
-        cmd.execute(ui, interactiveStorage, clientAddress, clientPort, dataBaseCenter, cmd.getUser());
+        boolean result = cmd.execute(ui, interactiveStorage, clientAddress, clientPort, dataBaseCenter, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
         collectionLock.readLock().unlock();
+        return result;
     }
 
-    public void executeCommand(UserInterface ui, Command cmd, String argument, InteractionInterface interactiveStorage, DataBaseCenter dataBaseCenter) {
+    public boolean executeCommand(UserInterface ui, Command cmd, String argument, InteractionInterface interactiveStorage, DataBaseCenter dataBaseCenter) {
         if (!cmd.isEditsCollection()) {
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with a string argument");
-        cmd.execute(ui, argument, interactiveStorage, clientAddress, clientPort, dataBaseCenter, cmd.getUser());
+        boolean result = cmd.execute(ui, argument, interactiveStorage, clientAddress, clientPort, dataBaseCenter, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
         collectionLock.readLock().unlock();
+        return result;
     }
 
-    public void executeCommand(UserInterface ui, Command cmd, InteractionInterface interactiveStorage, Worker worker, DataBaseCenter dbc) {
+    public boolean executeCommand(UserInterface ui, Command cmd, InteractionInterface interactiveStorage, Worker worker, DataBaseCenter dbc) {
         if (!cmd.isEditsCollection()) {
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with an object argument");
-        cmd.execute(ui, interactiveStorage, worker, clientAddress, clientPort, dbc, cmd.getUser());
+        boolean result = cmd.execute(ui, interactiveStorage, worker, clientAddress, clientPort, dbc, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
         collectionLock.readLock().unlock();
+        return result;
     }
 
-    public void executeCommand(UserInterface ui, Command cmd, String argument, InteractionInterface interactiveStorage, Worker worker, DataBaseCenter dbc) {
+    public boolean executeCommand(UserInterface ui, Command cmd, String argument, InteractionInterface interactiveStorage, Worker worker, DataBaseCenter dbc) {
         if (!cmd.isEditsCollection()) {
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with two arguments");
-        cmd.execute(ui, argument, interactiveStorage, worker, clientAddress, clientPort, dbc, cmd.getUser());
+        boolean result = cmd.execute(ui, argument, interactiveStorage, worker, clientAddress, clientPort, dbc, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
         collectionLock.readLock().unlock();
+        return result;
     }
 
-    public void executeCommand(UserInterface ui, Command cmd, boolean success) {
+    public boolean executeCommand(UserInterface ui, Command cmd, boolean success) {
         if (!cmd.isEditsCollection()) {
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with two string arguments");
-        cmd.execute(ui, success, clientAddress, clientPort);
+        boolean result = cmd.execute(ui, success, clientAddress, clientPort);
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
         collectionLock.readLock().unlock();
+        return result;
     }
 
-    public void executeServerCommand(Command cmd, InteractionInterface interactiveStorage) {
+    public boolean executeServerCommand(Command cmd, InteractionInterface interactiveStorage) {
         if (!cmd.isEditsCollection()) {
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing server command");
-        cmd.execute(interactiveStorage);
+        boolean result = cmd.execute(interactiveStorage);
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
         collectionLock.readLock().unlock();
+        return result;
     }
 
     public static void setClientAddress(InetAddress address) {
@@ -185,5 +191,13 @@ public class CommandCenter {
     public static void setClientPort(int port) {
         logger.log(Level.INFO, "Tying client's port to the command center");
         clientPort = port;
+    }
+
+    public static InetAddress getClientAddress() {
+        return clientAddress;
+    }
+
+    public static int getClientPort() {
+        return clientPort;
     }
 }

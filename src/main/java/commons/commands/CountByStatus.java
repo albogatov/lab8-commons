@@ -1,6 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
+import commons.app.ResponseData;
 import commons.app.User;
 import commons.elements.Status;
 import commons.utils.InteractionInterface;
@@ -8,6 +9,9 @@ import commons.utils.UserInterface;
 import commons.utils.DataBaseCenter;
 
 import java.net.InetAddress;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Класс команды count_by_status.
@@ -31,22 +35,45 @@ public class CountByStatus extends Command {
      * @param argument           необходимый для исполнения аргумент
      * @param interactiveStorage объект для взаимодействия с коллекцией
      */
-    public void execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
-        Thread response = new Thread(() -> {
-            try {
-                Status status = Status.valueOf(argument.toUpperCase());
-                long result = interactiveStorage.countByStatus(status);
-                ui.messageToClient("Элементов с таким статусом: " + result, address, port);
-                if (ui.isInteractionMode()) {
-                    ui.messageToClient("Awaiting further client instructions.", address, port);
+    public boolean execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
+        final ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+        Boolean result = null;
+        try {
+            result = singleThreadPool.submit(() -> {
+                try {
+                    Status status = Status.valueOf(argument.toUpperCase());
+                    long resultOperation = interactiveStorage.countByStatus(status);
+                    ResponseData.appendln("Элементов с таким статусом: " + resultOperation);
+//                    ui.messageToClient("Элементов с таким статусом: " + resultOperation, address, port);
+                    return true;
+                } catch (IllegalArgumentException e) {
+//                    ui.messageToClient("Неверный аргумент команды", address, port);
+                    return false;
                 }
-            } catch (IllegalArgumentException e) {
-                ui.messageToClient("Неверный аргумент команды", address, port);
-                if (ui.isInteractionMode()) {
-                    ui.messageToClient("Awaiting further client instructions.", address, port);
-                }
-            }
-        });
-        response.start();
+            }).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            result = false;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+//        Thread response = new Thread(() -> {
+//            try {
+//                Status status = Status.valueOf(argument.toUpperCase());
+//                long result = interactiveStorage.countByStatus(status);
+//                ui.messageToClient("Элементов с таким статусом: " + result, address, port);
+//                if (ui.isInteractionMode()) {
+//                    ui.messageToClient("Awaiting further client instructions.", address, port);
+//                }
+//            } catch (IllegalArgumentException e) {
+//                ui.messageToClient("Неверный аргумент команды", address, port);
+//                if (ui.isInteractionMode()) {
+//                    ui.messageToClient("Awaiting further client instructions.", address, port);
+//                }
+//            }
+//        });
+//        response.start();
     }
 }

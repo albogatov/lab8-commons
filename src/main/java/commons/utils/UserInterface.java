@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -296,6 +297,22 @@ public class UserInterface {
         logger.log(Level.INFO, "Starting to send an answer to the client");
         try {
             byte[] toBeSent = SerializationTool.serializeObject(message);
+            DatagramPacket out = null;
+            if (toBeSent != null) {
+                out = new DatagramPacket(toBeSent, toBeSent.length, address, port);
+            }
+            logger.log(Level.INFO, "Sending answer");
+            datagramSocket.send(out);
+        } catch (IOException e) {
+            logger.log(Level.INFO, "Answer sending failed");
+            e.printStackTrace();
+        }
+    }
+
+    public void collectionToClient(HashSet<Worker> collection, InetAddress address, int port) {
+        logger.log(Level.INFO, "Starting to send the collection to the client");
+        try {
+            byte[] toBeSent = SerializationTool.serializeObject(collection);
             DatagramPacket out = null;
             if (toBeSent != null) {
                 out = new DatagramPacket(toBeSent, toBeSent.length, address, port);

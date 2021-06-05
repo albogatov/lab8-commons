@@ -12,9 +12,13 @@ public class Login extends Command {
         argumentAmount = 2;
     }
 
-    public void execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
-        if (success)
+    public boolean execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
+        if (success) {
             ui.messageToClient("Вход в систему успешен!", clientAddress, clientPort);
-        else ui.messageToClient("Вход в систему не удался.", clientAddress, clientPort);
+            return true;
+        } else {
+            ui.messageToClient("Вход в систему не удался.", clientAddress, clientPort);
+            return false;
+        }
     }
 }

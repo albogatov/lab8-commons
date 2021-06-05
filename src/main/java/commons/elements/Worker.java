@@ -1,5 +1,7 @@
 package commons.elements;
 
+import commons.app.User;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -49,6 +51,8 @@ public class Worker implements Comparable<Worker>, Serializable {
      */
     private final Organization organization; //Поле может быть null
 
+    private String user = null;
+
     /**
      * Конструктор без ID.
      *
@@ -61,7 +65,7 @@ public class Worker implements Comparable<Worker>, Serializable {
      * @param status       статус.
      * @param organization организация.
      */
-    public Worker(String name, Coordinates coordinates, ZonedDateTime creationDate, Integer salary, LocalDate endDate, Position position, Status status, Organization organization) {
+    public Worker(String name, Coordinates coordinates, ZonedDateTime creationDate, Integer salary, LocalDate endDate, Position position, Status status, Organization organization, String user) {
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
@@ -70,6 +74,7 @@ public class Worker implements Comparable<Worker>, Serializable {
         this.position = position;
         this.status = status;
         this.organization = organization;
+        this.user = user;
     }
 
     /**
@@ -84,7 +89,7 @@ public class Worker implements Comparable<Worker>, Serializable {
      * @param status       статус.
      * @param organization организация.
      */
-    public Worker(long id, String name, Coordinates coordinates, ZonedDateTime creationDate, Integer salary, LocalDate endDate, Position position, Status status, Organization organization) {
+    public Worker(long id, String name, Coordinates coordinates, ZonedDateTime creationDate, Integer salary, LocalDate endDate, Position position, Status status, Organization organization, String user) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -94,6 +99,7 @@ public class Worker implements Comparable<Worker>, Serializable {
         this.position = position;
         this.status = status;
         this.organization = organization;
+        this.user = user;
     }
 
     /**
@@ -107,6 +113,19 @@ public class Worker implements Comparable<Worker>, Serializable {
      * @param status       статус.
      * @param organization организация.
      */
+    public Worker(String name, Coordinates coordinates, Integer salary, LocalDate endDate, Position position, Status status, Organization organization, String user) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.salary = salary;
+        this.endDate = endDate;
+        this.position = position;
+        this.status = status;
+        this.organization = organization;
+        this.creationDate = null;
+        this.user = user;
+    }
+
     public Worker(String name, Coordinates coordinates, Integer salary, LocalDate endDate, Position position, Status status, Organization organization) {
         this.id = id;
         this.name = name;
@@ -284,10 +303,10 @@ public class Worker implements Comparable<Worker>, Serializable {
      *
      * @return годовая выручка.
      */
-    public String getAnnualTurnover() {
+    public Long getAnnualTurnover() {
         if (organization == null || organization.getAnnualTurnover() == null)
             return null;
-        else return String.valueOf(organization.getAnnualTurnover());
+        else return organization.getAnnualTurnover();
     }
 
     /**
@@ -306,10 +325,10 @@ public class Worker implements Comparable<Worker>, Serializable {
      *
      * @return тип организации.
      */
-    public String getOrganizationType() {
+    public OrganizationType getOrganizationType() {
         if (organization == null || organization.getOrganizationType() == null)
             return null;
-        else return organization.getOrganizationType().toString();
+        else return organization.getOrganizationType();
     }
 
     /**
@@ -354,6 +373,14 @@ public class Worker implements Comparable<Worker>, Serializable {
         if (organization == null || organization.getPostalAddress() == null)
             return "null";
         else return organization.getPostalAddress().getZipCode();
+    }
+
+    public String getUsername() {
+        return user;
+    }
+
+    public void setUsername(String user) {
+        this.user = user;
     }
 
     public void setCreationDate(ZonedDateTime creationDate) {

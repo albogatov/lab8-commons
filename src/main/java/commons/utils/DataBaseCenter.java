@@ -88,7 +88,7 @@ public class DataBaseCenter {
             else preparedStatement.setString(10, worker.getOrganizationTypeString());
             if (worker.getAnnualTurnover() == null)
                 preparedStatement.setNull(11, Types.BIGINT);
-            else preparedStatement.setLong(11, Long.parseLong(worker.getAnnualTurnover()));
+            else preparedStatement.setLong(11, worker.getAnnualTurnover());
             preparedStatement.setString(12, worker.getAddressStreet());
             preparedStatement.setString(13, worker.getAddressZipCode());
             preparedStatement.setString(14, loggedUser.getLogin());
@@ -143,7 +143,7 @@ public class DataBaseCenter {
             else preparedStatement.setString(9, worker.getOrganizationTypeString());
             if (worker.getAnnualTurnover() == null)
                 preparedStatement.setNull(10, Types.BIGINT);
-            else preparedStatement.setLong(10, Long.parseLong(worker.getAnnualTurnover()));
+            else preparedStatement.setLong(10, worker.getAnnualTurnover());
             preparedStatement.setString(11, worker.getAddressStreet());
             preparedStatement.setString(12, worker.getAddressZipCode());
             preparedStatement.setLong(13, id);
@@ -216,7 +216,8 @@ public class DataBaseCenter {
                     annualTurnover = resultSet.getLong(12);
                 Address address = new Address(resultSet.getString(13), resultSet.getString(14));
                 Organization organization = new Organization(annualTurnover, orgType, address, organizationName);
-                Worker worker = new Worker(id, name, coordinates, creationDate, salary, endDate, position, status, organization);
+                String user = resultSet.getString(15);
+                Worker worker = new Worker(id, name, coordinates, creationDate, salary, endDate, position, status, organization, user);
                 collection.add(worker);
             }
             interaction.clear();

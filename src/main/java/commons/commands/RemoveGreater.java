@@ -1,6 +1,8 @@
 package commons.commands;
 
 import commons.app.Command;
+import commons.app.Response;
+import commons.app.ResponseData;
 import commons.app.User;
 import commons.elements.Worker;
 import commons.utils.InteractionInterface;
@@ -10,6 +12,9 @@ import commons.utils.DataBaseCenter;
 import java.net.InetAddress;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Класс команды remove_greater.
@@ -32,25 +37,57 @@ public class RemoveGreater extends Command {
      * @param ui                 объект, через который ведется взаимодействие с пользователем.
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
-    public void execute(UserInterface ui, InteractionInterface interactiveStorage, Worker worker, InetAddress address, int port, DataBaseCenter dbc, User user) {
-        Thread response = new Thread(() -> {
-            int size1 = interactiveStorage.getSize();
-            List<Long> deletionIds = interactiveStorage.removeGreater(worker);
-            interactiveStorage.removeGreater(worker);
-            int size2 = interactiveStorage.getSize();
-            if (size2 < size1) {
-                for (Long deletionId : deletionIds) {
-                    if (dbc.removeWorker(deletionId, user))
-                        ui.messageToClient("Операция успешно выполнена", address, port);
-                    else
-                        ui.messageToClient("Не удалось удалить элемент", address, port);
+    public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, Worker worker, InetAddress address, int port, DataBaseCenter dbc, User user) {
+        final ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+        Boolean result = null;
+        try {
+            result = singleThreadPool.submit(() -> {
+                int size1 = interactiveStorage.getSize();
+                List<Long> deletionIds = interactiveStorage.removeGreater(worker);
+                interactiveStorage.removeGreater(worker);
+                int size2 = interactiveStorage.getSize();
+                if (size2 < size1) {
+                    for (Long deletionId : deletionIds) {
+                        if (dbc.removeWorker(deletionId, user)) {
+                            ResponseData.appendln("Операция успешно выполнена");
+//                            ui.messageToClient("Операция успешно выполнена", address, port);
+                            return true;
+                        } else {
+                            ResponseData.appendln("Не удалось удалить элемент");
+//                            ui.messageToClient("Не удалось удалить элемент", address, port);
+                            return false;
+                        }
+                    }
+                    dbc.retrieveCollectionFromDB(interactiveStorage);
                 }
-                dbc.retrieveCollectionFromDB(interactiveStorage);
-            }
-            if (ui.isInteractionMode()) {
-                ui.messageToClient("Awaiting further client instructions.", address, port);
-            }
-        });
-        response.start();
+                return false;
+            }).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            result = false;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+//        Thread response = new Thread(() -> {
+//            int size1 = interactiveStorage.getSize();
+//            List<Long> deletionIds = interactiveStorage.removeGreater(worker);
+//            interactiveStorage.removeGreater(worker);
+//            int size2 = interactiveStorage.getSize();
+//            if (size2 < size1) {
+//                for (Long deletionId : deletionIds) {
+//                    if (dbc.removeWorker(deletionId, user))
+//                        ui.messageToClient("Операция успешно выполнена", address, port);
+//                    else
+//                        ui.messageToClient("Не удалось удалить элемент", address, port);
+//                }
+//                dbc.retrieveCollectionFromDB(interactiveStorage);
+//            }
+//            if (ui.isInteractionMode()) {
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
+//            }
+//        });
+//        response.start();
     }
 }

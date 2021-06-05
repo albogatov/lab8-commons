@@ -46,7 +46,7 @@ public class ExecuteScript extends Command {
      * @param argument           необходимый для исполнения аргумент.
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
-    public void execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
+    public boolean execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
         try {
             paths.add(argument);
             UserInterface scriptInteraction = new UserInterface(new FileReader(argument), new OutputStreamWriter(System.out), false);
@@ -57,7 +57,7 @@ public class ExecuteScript extends Command {
                 line = scriptInteraction.read().trim();
                 String[] args = line.split("\\s+");
                 if (args[0].equals("save")) {
-                    scriptInteraction.messageToClient("Данная команда недоступна пользователю", address, port);
+//                    scriptInteraction.messageToClient("Данная команда недоступна пользователю", address, port);
                 } else {
                     Command cmd = CommandCenter.getInstance().getCmd(args[0]);
                     if (cmd.getClass().toString().contains(".Login") || cmd.getClass().toString().contains(".Register"))
@@ -86,50 +86,54 @@ public class ExecuteScript extends Command {
                                 cmd.setObject(worker);
                                 CommandCenter.getInstance().executeCommand(scriptInteraction, cmd, args[1], interactiveStorage, worker, dbc);
                             } catch (ArrayIndexOutOfBoundsException e) {
-                                scriptInteraction.messageToClient("Неверно указан аргумент команды", address, port);
+//                                scriptInteraction.messageToClient("Неверно указан аргумент команды", address, port);
                             }
                         }
-                    } else scriptInteraction.messageToClient("Введена несуществующая команда", address, port);
+                    } else {
+
+                    }
+//                        scriptInteraction.messageToClient("Введена несуществующая команда", address, port);
                 }
             }
             paths.clear();
             if (success) {
-                ui.messageToClient("Скрипт выполнен", address, port);
-                ui.messageToClient("Awaiting further client instructions.", address, port);
+//                ui.messageToClient("Скрипт выполнен", address, port);
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
             } else {
-                ui.messageToClient("Скрипт не выполнен", address, port);
-                ui.messageToClient("Awaiting further client instructions.", address, port);
+//                ui.messageToClient("Скрипт не выполнен", address, port);
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
             }
         } catch (InvalidParameterException e) {
-            ui.messageToClient("Неверный скрипт", address, port);
-            if (ui.isInteractionMode()) {
-                ui.messageToClient("Awaiting further client instructions.", address, port);
-            }
+////            ui.messageToClient("Неверный скрипт", address, port);
+//            if (ui.isInteractionMode()) {
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
+//            }
             success = false;
             paths.clear();
         } catch (FileNotFoundException e) {
-            ui.messageToClient("В качестве аргумента указан путь к несуществуюшему файлу", address, port);
-            if (ui.isInteractionMode()) {
-                ui.messageToClient("Awaiting further client instructions.", address, port);
-            }
+//            ui.messageToClient("В качестве аргумента указан путь к несуществуюшему файлу", address, port);
+//            if (ui.isInteractionMode()) {
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
+//            }
             success = false;
             paths.clear();
 
         } catch (NoSuchElementException e) {
-            ui.messageToClient("Скрипт некорректен, проверьте верность введенных команд", address, port);
-            if (ui.isInteractionMode()) {
-                ui.messageToClient("Awaiting further client instructions.", address, port);
-            }
+//            ui.messageToClient("Скрипт некорректен, проверьте верность введенных команд", address, port);
+//            if (ui.isInteractionMode()) {
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
+//            }
             success = false;
             paths.clear();
         } catch (InvalidAlgorithmParameterException e) {
-            ui.messageToClient("Выполнение скрипта остановлено, т.к. возможна рекурсия", address, port);
-            if (ui.isInteractionMode()) {
-                ui.messageToClient("Awaiting further client instructions.", address, port);
-            }
+//            ui.messageToClient("Выполнение скрипта остановлено, т.к. возможна рекурсия", address, port);
+//            if (ui.isInteractionMode()) {
+//                ui.messageToClient("Awaiting further client instructions.", address, port);
+//            }
             success = false;
             paths.clear();
         }
+        return success;
     }
 }
 
