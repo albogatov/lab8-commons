@@ -1,13 +1,12 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
 
 import java.net.InetAddress;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,15 +38,17 @@ public class Save extends Command {
         try {
             result = singleThreadPool.submit(() -> {
                 interactiveStorage.save();
-                ResponseData.appendln("Коллекция сохранена в файл");
+                ResponseData.appendLine("SaveMessage");
 //                ui.messageToClient("Коллекция сохранена в файл", address, port);
                 return true;
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;

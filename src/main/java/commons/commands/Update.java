@@ -1,7 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.elements.Worker;
 import commons.utils.InteractionInterface;
@@ -9,7 +9,6 @@ import commons.utils.UserInterface;
 import commons.utils.DataBaseCenter;
 
 import java.net.InetAddress;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,22 +42,24 @@ public class Update extends Command {
             result = singleThreadPool.submit(() -> {
                 long id = Long.parseLong(argument);
                 if (interactiveStorage.findById(id) && dbc.updateWorker(worker, id, user)) {
-                    interactiveStorage.update(id, worker);
+//                    interactiveStorage.update(id, worker);
                     dbc.retrieveCollectionFromDB(interactiveStorage);
-                    ResponseData.appendln("Сотрудник обновлен");
+                    ResponseData.appendLine("UpdateSuccess");
 //                    ui.messageToClient("Сотрудник обновлен", address, port);
                     return true;
                 } else {
-                    ResponseData.appendln("Сотрудника с таким идентификатором нет");
+                    ResponseData.appendLine("UpdateError");
 //                    ui.messageToClient("Сотрудника с таким идентификатором нет", address, port);
                     return false;
                 }
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;

@@ -1,7 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
@@ -39,23 +39,24 @@ public class Clear extends Command {
         try {
             result = singleThreadPool.submit(() -> {
                 if (!(dbc.clearCollection(user))) {
-                    ResponseData.append("Что-то пошло не так, попробуйте еще раз");
+                    ResponseData.append("ClearError");
 //                    ui.messageToClient("Что-то пошло не так, попробуйте еще раз", address, port);
                     return false;
-                }
-                else {
-                    interactiveStorage.clear();
-                    ResponseData.appendln("Коллекция очищена");
-//                    ui.messageToClient("Коллекция очищена", address, port);
+                } else {
+//                    interactiveStorage.clear();
                     dbc.retrieveCollectionFromDB(interactiveStorage);
+                    ResponseData.appendLine("ClearSuccess");
+//                    ui.messageToClient("Коллекция очищена", address, port);
                     return true;
                 }
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;

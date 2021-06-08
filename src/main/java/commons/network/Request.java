@@ -1,4 +1,6 @@
-package commons.app;
+package commons.network;
+
+import commons.app.User;
 
 import java.io.Serializable;
 

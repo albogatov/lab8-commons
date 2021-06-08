@@ -1,4 +1,4 @@
-package commons.app;
+package commons.network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,52 +8,31 @@ public class ResponseData {
     private static StringBuilder stringBuilder = new StringBuilder();
     private static List<String> argList = new ArrayList<>();
 
-    /**
-     * Append object to out to the end of string.
-     *
-     * @param toOut Object to Out.
-     */
     public static void append(Object toOut) {
         stringBuilder.append(toOut);
     }
 
-    /**
-     * Append line break to the end of string.
-     */
-    public static void appendln() {
+    public static void appendLine() {
         stringBuilder.append("\n");
     }
 
-    /**
-     * Append object to out and line break to the end of string.
-     *
-     * @param toOut Object to Out.
-     */
-    public static void appendln(Object toOut) {
+    public static void appendLine(Object toOut) {
         stringBuilder.append(toOut + "\n");
+//        System.out.println(stringBuilder.toString());
     }
 
-    /**
-     * Append error description and line break to the end of string.
-     *
-     * @param toOut Error description.
-     */
-    public static void appenderror(Object toOut) {
+    public static void appendError(Object toOut) {
         stringBuilder.append("error: " + toOut + "\n");
     }
 
-    public static void appendargs(String... args) {
+    public static void appendArgs(String... args) {
         argList.addAll(Arrays.asList(args));
     }
 
-    /**
-     * Takes a constructed string and clears the buffer.
-     *
-     * @return Сonstructed string.
-     */
     public static String getAndClear() {
         String toReturn = stringBuilder.toString().trim();
         stringBuilder.delete(0, stringBuilder.length());
+//        System.out.println(toReturn);
         return toReturn;
     }
 

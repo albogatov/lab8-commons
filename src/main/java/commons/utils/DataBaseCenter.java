@@ -158,11 +158,12 @@ public class DataBaseCenter {
 
     public boolean removeWorker(long id, User loggedUser) {
         try (Connection connection = DriverManager.getConnection(URL, user, password)) {
-//            String query = "SELECT * FROM worker WHERE id = " + id + ";";
-            PreparedStatement statement = connection.prepareStatement(QueryConstants.ELEMENT_SELECT);
-            statement.setString(1, "*");
-            statement.setLong(2, id);
-            ResultSet resultSet = statement.executeQuery();
+            String query = "SELECT * FROM worker WHERE id = " + id + ";";
+//            PreparedStatement statement = connection.prepareStatement(QueryConstants.ELEMENT_SELECT);
+            Statement statement = connection.createStatement();
+//            statement.setString(1, "username");
+//            statement.setLong(2, id);
+            ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 if (!resultSet.getString("username").equals(loggedUser.getLogin()))
                     return false;
@@ -171,9 +172,10 @@ public class DataBaseCenter {
 //                    " AND username = '" + loggedUser.getLogin() + "';";
             PreparedStatement preparedStatement = connection.prepareStatement(QueryConstants.ELEMENT_DELETE);
             preparedStatement.setLong(1, id);
-            preparedStatement.setString(2, "'" + loggedUser.getLogin() + "'");
-            preparedStatement.execute();
-            return true;
+            preparedStatement.setString(2, loggedUser.getLogin());
+            if (preparedStatement.executeUpdate() == 0)
+                return false;
+            else return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

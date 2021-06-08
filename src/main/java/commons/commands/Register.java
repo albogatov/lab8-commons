@@ -1,6 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
+import commons.network.ResponseData;
 import commons.utils.UserInterface;
 
 import java.net.InetAddress;
@@ -14,10 +15,10 @@ public class Register extends Command {
 
     public boolean execute(UserInterface ui, boolean success, InetAddress clientAddress, int clientPort) {
         if (success) {
-            ui.messageToClient("Регистрация успешна!", clientAddress, clientPort);
+            ResponseData.appendLine("RegisterSuccess");
             return true;
         } else {
-            ui.messageToClient("Регистрация не удалась.", clientAddress, clientPort);
+            ResponseData.appendLine("RegisterError");
             return false;
         }
     }

@@ -1,7 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
 import commons.utils.DataBaseCenter;
@@ -31,7 +31,7 @@ public class Exit extends Command {
      */
     public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc) {
         Thread response = new Thread(() -> {
-            ResponseData.appendln("До новых встреч");
+            ResponseData.appendLine("ExitMessage");
 //            ui.messageToClient("До новых встреч", address, port);
         });
         response.start();

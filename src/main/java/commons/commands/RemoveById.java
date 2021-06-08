@@ -1,7 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.utils.InteractionInterface;
 
@@ -44,13 +44,13 @@ public class RemoveById extends Command {
                     long id = Long.parseLong(argument);
                     if (interactiveStorage.findById(id))
                         if (dbc.removeWorker(id, user)) {
-                            interactiveStorage.removeById(id);
+//                            interactiveStorage.removeById(id);
                             dbc.retrieveCollectionFromDB(interactiveStorage);
-                            ResponseData.appendln("Сотрудник удален");
+                            ResponseData.appendLine("RemoveSuccess");
 //                            ui.messageToClient("Сотрудник удален", address, port);
                             return true;
                         } else {
-                            ResponseData.appendln("Сотрудник с таким id не найден или вы не имеете право его редактировать");
+                            ResponseData.appendLine("RemoveError");
 //                            ui.messageToClient("Сотрудник с таким id не найден или вы не имеете право его редактировать", address, port);
                             return false;
                         }
@@ -62,32 +62,13 @@ public class RemoveById extends Command {
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;
-//        Thread response = new Thread(() -> {
-//            try {
-//                long id = Long.parseLong(argument);
-//                if (interactiveStorage.findById(id))
-//                    if (interactiveStorage.findById(id) && dbc.removeWorker(id, user)) {
-//                        interactiveStorage.removeById(id);
-//                        dbc.retrieveCollectionFromDB(interactiveStorage);
-//                        ui.messageToClient("Сотрудник удален", address, port);
-//                    } else
-//                        ui.messageToClient("Сотрудник с таким id не найден или вы не имеете право его редактировать", address, port);
-//                if (ui.isInteractionMode()) {
-//                    ui.messageToClient("Awaiting further client instructions.", address, port);
-//                }
-//            } catch (NumberFormatException e) {
-//                ui.messageToClient("Введен неверный аргумент команды", address, port);
-//                if (ui.isInteractionMode()) {
-//                    ui.messageToClient("Awaiting further client instructions.", address, port);
-//                }
-//            }
-//        });
-//        response.start();
     }
 }

@@ -1,8 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.Response;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.elements.Worker;
 import commons.utils.InteractionInterface;
@@ -45,21 +44,24 @@ public class AddIfMin extends Command {
                 interactiveStorage.addIfMin(worker);
                 int size2 = interactiveStorage.getSize();
                 if ((size2 > size1) && dbc.addWorker(worker, user)) {
-                    ResponseData.appendln("Элемент успешно добавлен");
-//                    ui.messageToClient("Элемент успешно добавлен", address, port);
                     dbc.retrieveCollectionFromDB(interactiveStorage);
+                    ResponseData.appendLine("AddIfMinSuccess");
+//                    ui.messageToClient("Элемент успешно добавлен", address, port);
                     return true;
                 } else {
-                    ResponseData.append("Элемент не добавлен, т.к. он не подходит критерию или уже содержится в базе");
+                    dbc.retrieveCollectionFromDB(interactiveStorage);
+                    ResponseData.append("AddIfMinError");
 //                    ui.messageToClient("Элемент не добавлен, т.к. он не подходит критерию или уже содержится в базе", address, port);
                     return false;
                 }
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.append("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.append("CommandError");
             result = false;
         }
         return result;

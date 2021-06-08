@@ -1,7 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
@@ -36,7 +36,8 @@ public class PrintUniqueOrganization extends Command {
             List<String> result = interactiveStorage.printUniqueOrganization();
             StringBuilder display = new StringBuilder();
             result.forEach(display::append);
-            ResponseData.appendln(display.toString());
+            ResponseData.appendArgs(display.toString());
+            ResponseData.appendLine("PrintOrgsMessage");
 //            ui.messageToClient(display.toString(), address, port);
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);

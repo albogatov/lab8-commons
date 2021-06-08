@@ -1,4 +1,4 @@
-package commons.app;
+package commons.network;
 
 import commons.elements.Worker;
 
@@ -18,9 +18,9 @@ public class Response implements Serializable {
     public Response(ResponseCode responseCode,
                     HashSet<Worker> workers) {
         this.responseCode = responseCode;
-        this.responseBody = responseBody;
+//        this.responseBody = responseBody;
         this.workers = workers;
-        this.responseBodyArgs = responseBodyArgs;
+//        this.responseBodyArgs = responseBodyArgs;
     }
 
     public ResponseCode getResponseCode() {
@@ -41,7 +41,7 @@ public class Response implements Serializable {
 
     @Override
     public String toString() {
-        return "Response[" + responseCode + "]";
+        return "Response[" + responseCode + "" + responseBody + "]";
     }
 
     public void setResponseCode(ResponseCode responseCode) {

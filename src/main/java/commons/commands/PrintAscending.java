@@ -1,8 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.Response;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
@@ -33,7 +32,8 @@ public class PrintAscending extends Command {
      */
     public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
         Thread response = new Thread(() -> {
-            ResponseData.appendln(interactiveStorage.printAscending());
+            ResponseData.appendArgs(interactiveStorage.printAscending());
+            ResponseData.appendLine("PrintOrgsMessage");
 //            ui.messageToClient(interactiveStorage.printAscending(), address, port);
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);

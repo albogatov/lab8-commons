@@ -1,8 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.Response;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.elements.Worker;
 import commons.utils.InteractionInterface;
@@ -47,24 +46,27 @@ public class RemoveLower extends Command {
                 if (size2 < size1) {
                     for (Long deletionId : deletionIds) {
                         if (dbc.removeWorker(deletionId, user)) {
-                            ResponseData.appendln("Операция успешно выполнена");
+                            dbc.retrieveCollectionFromDB(interactiveStorage);
+                            ResponseData.appendLine("RemoveLowerSuccess");
 //                            ui.messageToClient("Операция успешно выполнена", address, port);
                             return true;
                         } else {
-                            ResponseData.appendln("Не удалось удалить элемент");
+                            dbc.retrieveCollectionFromDB(interactiveStorage);
+                            ResponseData.appendLine("RemoveLowerError");
 //                            ui.messageToClient("Не удалось удалить элемент", address, port);
                             return false;
                         }
                     }
-                    dbc.retrieveCollectionFromDB(interactiveStorage);
                 }
                 return false;
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;

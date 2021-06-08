@@ -1,8 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.Response;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.elements.Worker;
 import commons.utils.InteractionInterface;
@@ -10,7 +9,6 @@ import commons.utils.UserInterface;
 import commons.utils.DataBaseCenter;
 
 import java.net.InetAddress;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -44,29 +42,32 @@ public class RemoveGreater extends Command {
             result = singleThreadPool.submit(() -> {
                 int size1 = interactiveStorage.getSize();
                 List<Long> deletionIds = interactiveStorage.removeGreater(worker);
-                interactiveStorage.removeGreater(worker);
+//                interactiveStorage.removeGreater(worker);
                 int size2 = interactiveStorage.getSize();
                 if (size2 < size1) {
                     for (Long deletionId : deletionIds) {
                         if (dbc.removeWorker(deletionId, user)) {
-                            ResponseData.appendln("Операция успешно выполнена");
+                            ResponseData.appendLine("RemoveGreaterSuccess");
+                            dbc.retrieveCollectionFromDB(interactiveStorage);
 //                            ui.messageToClient("Операция успешно выполнена", address, port);
                             return true;
                         } else {
-                            ResponseData.appendln("Не удалось удалить элемент");
+                            ResponseData.appendLine("RemoveGreaterError");
+                            dbc.retrieveCollectionFromDB(interactiveStorage);
 //                            ui.messageToClient("Не удалось удалить элемент", address, port);
                             return false;
                         }
                     }
-                    dbc.retrieveCollectionFromDB(interactiveStorage);
                 }
                 return false;
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;

@@ -2,6 +2,7 @@ package commons.commands;
 
 import commons.app.Command;
 import commons.app.User;
+import commons.network.ResponseData;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
 import commons.utils.DataBaseCenter;
@@ -38,10 +39,11 @@ public class Show extends Command {
 //            }
 //            interactiveStorage.getStorage().getCollection().stream().forEach(worker -> System.out.println(worker.displayWorker()));
 //            ui.messageToClient("Collection Incoming", address, port);
-            ui.collectionToClient(interactiveStorage.getStorage().getCollection(), address, port);
+//            ui.collectionToClient(interactiveStorage.getStorage().getCollection(), address, port);
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
 //            }
+            ResponseData.appendLine("Empty");
         });
         response.start();
         return true;

@@ -119,19 +119,20 @@ public class CommandCenter {
         boolean result = cmd.execute(ui, interactiveStorage, clientAddress, clientPort, dataBaseCenter, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
-        collectionLock.readLock().unlock();
+        else collectionLock.readLock().unlock();
         return result;
     }
 
     public boolean executeCommand(UserInterface ui, Command cmd, String argument, InteractionInterface interactiveStorage, DataBaseCenter dataBaseCenter) {
         if (!cmd.isEditsCollection()) {
+            System.out.println("read locked");
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with a string argument");
         boolean result = cmd.execute(ui, argument, interactiveStorage, clientAddress, clientPort, dataBaseCenter, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
-        collectionLock.readLock().unlock();
+        else collectionLock.readLock().unlock();
         return result;
     }
 
@@ -143,7 +144,7 @@ public class CommandCenter {
         boolean result = cmd.execute(ui, interactiveStorage, worker, clientAddress, clientPort, dbc, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
-        collectionLock.readLock().unlock();
+        else collectionLock.readLock().unlock();
         return result;
     }
 
@@ -155,7 +156,7 @@ public class CommandCenter {
         boolean result = cmd.execute(ui, argument, interactiveStorage, worker, clientAddress, clientPort, dbc, cmd.getUser());
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
-        collectionLock.readLock().unlock();
+        else collectionLock.readLock().unlock();
         return result;
     }
 
@@ -167,7 +168,7 @@ public class CommandCenter {
         boolean result = cmd.execute(ui, success, clientAddress, clientPort);
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
-        collectionLock.readLock().unlock();
+        else collectionLock.readLock().unlock();
         return result;
     }
 
@@ -179,7 +180,7 @@ public class CommandCenter {
         boolean result = cmd.execute(interactiveStorage);
         if (collectionLock.isWriteLocked())
             collectionLock.writeLock().unlock();
-        collectionLock.readLock().unlock();
+        else collectionLock.readLock().unlock();
         return result;
     }
 

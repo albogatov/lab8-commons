@@ -1,7 +1,7 @@
 package commons.commands;
 
 import commons.app.Command;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.elements.Status;
 import commons.utils.InteractionInterface;
@@ -43,19 +43,23 @@ public class CountByStatus extends Command {
                 try {
                     Status status = Status.valueOf(argument.toUpperCase());
                     long resultOperation = interactiveStorage.countByStatus(status);
-                    ResponseData.appendln("Элементов с таким статусом: " + resultOperation);
+                    ResponseData.appendLine("CountByStatusMessage");
+                    ResponseData.appendArgs("" + resultOperation);
 //                    ui.messageToClient("Элементов с таким статусом: " + resultOperation, address, port);
                     return true;
                 } catch (IllegalArgumentException e) {
 //                    ui.messageToClient("Неверный аргумент команды", address, port);
+                    ResponseData.appendLine("CommandError");
                     return false;
                 }
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
         return result;

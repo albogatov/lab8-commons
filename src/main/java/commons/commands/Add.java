@@ -2,7 +2,7 @@ package commons.commands;
 
 import commons.app.Command;
 //import server.interaction.InteractionInterface;
-import commons.app.ResponseData;
+import commons.network.ResponseData;
 import commons.app.User;
 import commons.utils.InteractionInterface;
 import commons.utils.UserInterface;
@@ -43,23 +43,29 @@ public class Add extends Command implements Serializable {
             result = singleThreadPool.submit(() -> {
                 if (dbc.addWorker(worker, user)) {
                     worker.setUsername(user.getLogin());
-                    interactiveStorage.add(worker);
-                    ResponseData.append("Сотрудник успешно добавлен");
-//                    ui.messageToClient("Сотрудник успешно добавлен", address, port);
+//                    interactiveStorage.add(worker);
                     dbc.retrieveCollectionFromDB(interactiveStorage);
+                    ResponseData.appendLine("AddSuccess");
+                    System.out.println(interactiveStorage.getStorage().getCollection() + " DATA FROM CMD");
+//                    ui.messageToClient("Сотрудник успешно добавлен", address, port);
 //                    ui.collectionToClient(interactiveStorage.getStorage().getCollection(), address, port);
+                    System.out.println("executed pool");
                     return true;
                 } else {
-                    ResponseData.appendln("Ошибка при добавлении сотрудника");
+                    dbc.retrieveCollectionFromDB(interactiveStorage);
+                    ResponseData.appendLine("AddError");
 //                    ui.messageToClient("Ошибка при добавлении сотрудника", address, port);
+                    System.out.println("executed pool");
                     return false;
                 }
             }).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         } catch (ExecutionException e) {
             e.printStackTrace();
+            ResponseData.appendLine("CommandError");
             result = false;
         }
 //        Thread response = new Thread(() -> {
