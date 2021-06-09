@@ -39,8 +39,8 @@ public class Info extends Command {
 ////            }
 //        });
 //        response.start();
-        ResponseData.appendArgs(interactiveStorage.info());
         ResponseData.appendLine("InfoMessage");
+        ResponseData.appendArgs(interactiveStorage.info().split("\n"));
         return true;
     }
 }

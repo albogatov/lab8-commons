@@ -409,19 +409,9 @@ public class Worker implements Comparable<Worker>, Serializable {
      * Метод, выводящий пользователю все данные о рабочем.
      */
     public String displayWorker() {
-        return "------------------------------" + "\n" +
-                "ID рабочего - " + this.getId() + "\n" +
-                "Имя рабочего - " + this.getName() + "\n" +
-                "Координаты рабочего - " + this.getCoordinates().toString() + "\n" +
-                "Добавлен в базу - " + this.getCreationDateString() + "\n" +
-                "Зарплата рабочего - " + this.getSalary().toString() + "\n" +
-                "Контракт истекает - " + this.getEndDate() + "\n" +
-                "Должность - " + this.getPosition() + "\n" +
-                "Статус - " + this.getStatus() + "\n" +
-                "Организация - " + this.getOrganizationName() + "\n" +
-                "Тип организации - " + this.getOrganizationType() + "\n" +
-                "Годовая выручка организации - " + this.getAnnualTurnover() + "\n" +
-                "Адрес организации - " + this.getPostalAddress() + "\n";
+        return "\n" + this.getName() + "\n" + this.getSalary().toString() + "$\n" +
+                this.getEndDateString() + "\n" + this.getPositionString() + "\n" + this.getStatusString() + "\n" +
+                this.getOrganizationName() + "\n" + this.getOrganizationTypeString() + "\n";
     }
 
     /**

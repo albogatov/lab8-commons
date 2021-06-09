@@ -239,7 +239,7 @@ public class DataBaseCenter {
 //                String deletionQuery = "DELETE FROM worker WHERE id = " + id + " AND username = '" + loggedUser.getLogin() + "';";
                 PreparedStatement deletion = connection.prepareStatement(QueryConstants.ELEMENT_DELETE);
                 deletion.setLong(1, id);
-                deletion.setString(2, "'" + loggedUser.getLogin() + "'");
+                deletion.setString(2, loggedUser.getLogin());
                 deletion.execute();
             }
             return true;

@@ -33,33 +33,31 @@ public class Save extends Command {
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
     public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, User user) {
-        final ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
-        Boolean result = null;
-        try {
-            result = singleThreadPool.submit(() -> {
-                interactiveStorage.save();
-                ResponseData.appendLine("SaveMessage");
-//                ui.messageToClient("Коллекция сохранена в файл", address, port);
-                return true;
-            }).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            ResponseData.appendLine("CommandError");
-            result = false;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            ResponseData.appendLine("CommandError");
-            result = false;
-        }
-        return result;
-//        Thread response = new Thread(() -> {
-//            interactiveStorage.save();
-//            ui.messageToClient("Коллекция сохранена в файл", address, port);
-//            if (ui.isInteractionMode()) {
-//                ui.messageToClient("Awaiting further client instructions.", address, port);
-//            }
-//        });
-//        response.start();
+//        final ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+//        Boolean result = null;
+//        try {
+//            result = singleThreadPool.submit(() -> {
+//                interactiveStorage.save();
+//                ResponseData.appendLine("SaveMessage");
+////                ui.messageToClient("Коллекция сохранена в файл", address, port);
+//                return true;
+//            }).get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            ResponseData.appendLine("CommandError");
+//            result = false;
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//            ResponseData.appendLine("CommandError");
+//            result = false;
+//        }
+//        return result;
+        Thread response = new Thread(() -> {
+            interactiveStorage.save();
+        });
+        response.start();
+        ResponseData.appendLine("SaveMessage");
+        return true;
     }
 
     public boolean execute(InteractionInterface interactiveStorage) {
