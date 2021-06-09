@@ -47,10 +47,8 @@ public class RemoveGreater extends Command {
                 if (size2 < size1) {
                     for (Long deletionId : deletionIds) {
                         if (dbc.removeWorker(deletionId, user)) {
-                            ResponseData.appendLine("RemoveGreaterSuccess");
                             dbc.retrieveCollectionFromDB(interactiveStorage);
 //                            ui.messageToClient("Операция успешно выполнена", address, port);
-                            return true;
                         } else {
                             ResponseData.appendLine("RemoveGreaterError");
                             dbc.retrieveCollectionFromDB(interactiveStorage);
@@ -58,6 +56,8 @@ public class RemoveGreater extends Command {
                             return false;
                         }
                     }
+                    ResponseData.appendLine("RemoveGreaterSuccess");
+                    return true;
                 }
                 return false;
             }).get();

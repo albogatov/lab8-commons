@@ -31,15 +31,16 @@ public class Info extends Command {
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
     public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
-        Thread response = new Thread(() -> {
-            ResponseData.appendArgs(interactiveStorage.info());
-            ResponseData.appendLine("InfoMessage");
-//            ui.messageToClient(interactiveStorage.info(), address, port);
-//            if (ui.isInteractionMode()) {
-//                ui.messageToClient("Awaiting further client instructions.", address, port);
-//            }
-        });
-        response.start();
+//        Thread response = new Thread(() -> {
+//
+////            ui.messageToClient(interactiveStorage.info(), address, port);
+////            if (ui.isInteractionMode()) {
+////                ui.messageToClient("Awaiting further client instructions.", address, port);
+////            }
+//        });
+//        response.start();
+        ResponseData.appendArgs(interactiveStorage.info());
+        ResponseData.appendLine("InfoMessage");
         return true;
     }
 }

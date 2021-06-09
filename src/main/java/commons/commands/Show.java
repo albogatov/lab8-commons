@@ -31,21 +31,7 @@ public class Show extends Command {
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
     public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
-        Thread response = new Thread(() -> {
-//            if (interactiveStorage.getSize() == 0)
-//                ui.messageToClient("Коллекция пуста", address, port);
-//            else {
-//                ui.messageToClient("Коллекция: " + "\n" + interactiveStorage.show(), address, port);
-//            }
-//            interactiveStorage.getStorage().getCollection().stream().forEach(worker -> System.out.println(worker.displayWorker()));
-//            ui.messageToClient("Collection Incoming", address, port);
-//            ui.collectionToClient(interactiveStorage.getStorage().getCollection(), address, port);
-//            if (ui.isInteractionMode()) {
-//                ui.messageToClient("Awaiting further client instructions.", address, port);
-//            }
-            ResponseData.appendLine("Empty");
-        });
-        response.start();
+        ResponseData.appendLine("Empty");
         return true;
     }
 }

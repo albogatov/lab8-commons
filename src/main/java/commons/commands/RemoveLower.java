@@ -47,9 +47,6 @@ public class RemoveLower extends Command {
                     for (Long deletionId : deletionIds) {
                         if (dbc.removeWorker(deletionId, user)) {
                             dbc.retrieveCollectionFromDB(interactiveStorage);
-                            ResponseData.appendLine("RemoveLowerSuccess");
-//                            ui.messageToClient("Операция успешно выполнена", address, port);
-                            return true;
                         } else {
                             dbc.retrieveCollectionFromDB(interactiveStorage);
                             ResponseData.appendLine("RemoveLowerError");
@@ -57,6 +54,9 @@ public class RemoveLower extends Command {
                             return false;
                         }
                     }
+                    ResponseData.appendLine("RemoveLowerSuccess");
+//                            ui.messageToClient("Операция успешно выполнена", address, port);
+                    return true;
                 }
                 return false;
             }).get();

@@ -32,20 +32,21 @@ public class Help extends Command {
      * @param interactiveStorage объект для взаимодействия с коллекцией.
      */
     public boolean execute(UserInterface ui, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
-        Thread response = new Thread(() -> {
-            StringBuilder display = new StringBuilder();
-            for (Command cmd : CommandCenter.getInstance().retrieveAllCommands()) {
-                if (!cmd.getCommand().equals("save"))
-                    display.append(cmd.getCommand()).append(": ").append(cmd.getHelp()).append("\n");
-            }
-            ResponseData.appendArgs(display.toString());
-            ResponseData.appendLine("HelpMessage");
-//            ui.messageToClient(display.toString(), address, port);
-//            if (ui.isInteractionMode()) {
-//                ui.messageToClient("Awaiting further client instructions.", address, port);
+//        Thread response = new Thread(() -> {
+//            StringBuilder display = new StringBuilder();
+//            for (Command cmd : CommandCenter.getInstance().retrieveAllCommands()) {
+//                if (!cmd.getCommand().equals("save"))
+//                    display.append(cmd.getCommand()).append(": ").append(cmd.getHelp()).append("\n");
 //            }
-        });
-        response.start();
+//            ResponseData.appendArgs(display.toString());
+//            ResponseData.appendLine("HelpMessage");
+////            ui.messageToClient(display.toString(), address, port);
+////            if (ui.isInteractionMode()) {
+////                ui.messageToClient("Awaiting further client instructions.", address, port);
+////            }
+//        });
+//        response.start();
+        ResponseData.appendLine("HelpMessage");
         return true;
     }
 }

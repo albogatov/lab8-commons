@@ -21,9 +21,9 @@ public class ResponseData {
 //        System.out.println(stringBuilder.toString());
     }
 
-    public static void appendError(Object toOut) {
-        stringBuilder.append("error: " + toOut + "\n");
-    }
+//    public static void appendError(Object toOut) {
+//        stringBuilder.append("error: " + toOut + "\n");
+//    }
 
     public static void appendArgs(String... args) {
         argList.addAll(Arrays.asList(args));
@@ -32,7 +32,7 @@ public class ResponseData {
     public static String getAndClear() {
         String toReturn = stringBuilder.toString().trim();
         stringBuilder.delete(0, stringBuilder.length());
-//        System.out.println(toReturn);
+        System.out.println("Body cleared");
         return toReturn;
     }
 
@@ -40,6 +40,7 @@ public class ResponseData {
         String[] argsAsArray = new String[argList.size()];
         argsAsArray = argList.toArray(argsAsArray);
         argList.clear();
+        System.out.println("Args cleared");
         return argsAsArray;
     }
 }

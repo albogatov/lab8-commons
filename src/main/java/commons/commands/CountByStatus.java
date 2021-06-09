@@ -63,21 +63,5 @@ public class CountByStatus extends Command {
             result = false;
         }
         return result;
-//        Thread response = new Thread(() -> {
-//            try {
-//                Status status = Status.valueOf(argument.toUpperCase());
-//                long result = interactiveStorage.countByStatus(status);
-//                ui.messageToClient("Элементов с таким статусом: " + result, address, port);
-//                if (ui.isInteractionMode()) {
-//                    ui.messageToClient("Awaiting further client instructions.", address, port);
-//                }
-//            } catch (IllegalArgumentException e) {
-//                ui.messageToClient("Неверный аргумент команды", address, port);
-//                if (ui.isInteractionMode()) {
-//                    ui.messageToClient("Awaiting further client instructions.", address, port);
-//                }
-//            }
-//        });
-//        response.start();
     }
 }

@@ -49,6 +49,7 @@ public class ExecuteScript extends Command {
      */
     public boolean execute(UserInterface ui, String argument, InteractionInterface interactiveStorage, InetAddress address, int port, DataBaseCenter dbc, User user) {
         try {
+            System.out.println("script enter");
             paths.add(argument);
             UserInterface scriptInteraction = new UserInterface(new FileReader(argument), new OutputStreamWriter(System.out), false);
             scriptInteraction.connectToServer(ui.getConnection());
@@ -100,10 +101,12 @@ public class ExecuteScript extends Command {
             if (success) {
 //                ui.messageToClient("Скрипт выполнен", address, port);
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
+                ResponseData.getAndClear();
                 ResponseData.appendLine("ScriptSuccess");
             } else {
 //                ui.messageToClient("Скрипт не выполнен", address, port);
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
+                ResponseData.getAndClear();
                 ResponseData.appendLine("ScriptError");
             }
         } catch (InvalidParameterException e) {
@@ -111,6 +114,7 @@ public class ExecuteScript extends Command {
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
 //            }
+            ResponseData.getAndClear();
             ResponseData.appendLine("ScriptError");
             success = false;
             paths.clear();
@@ -119,6 +123,7 @@ public class ExecuteScript extends Command {
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
 //            }
+            ResponseData.getAndClear();
             ResponseData.appendLine("ScriptError");
             success = false;
             paths.clear();
@@ -128,6 +133,7 @@ public class ExecuteScript extends Command {
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
 //            }
+            ResponseData.getAndClear();
             ResponseData.appendLine("ScriptError");
             success = false;
             paths.clear();
@@ -136,6 +142,7 @@ public class ExecuteScript extends Command {
 //            if (ui.isInteractionMode()) {
 //                ui.messageToClient("Awaiting further client instructions.", address, port);
 //            }
+            ResponseData.getAndClear();
             ResponseData.appendLine("ScriptError");
             success = false;
             paths.clear();
