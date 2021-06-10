@@ -125,7 +125,6 @@ public class CommandCenter {
 
     public boolean executeCommand(UserInterface ui, Command cmd, String argument, InteractionInterface interactiveStorage, DataBaseCenter dataBaseCenter) {
         if (!cmd.isEditsCollection()) {
-            System.out.println("read locked");
             collectionLock.readLock().lock();
         } else collectionLock.writeLock().lock();
         logger.log(Level.INFO, "Executing user command with a string argument");
